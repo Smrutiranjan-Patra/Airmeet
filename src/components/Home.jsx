@@ -29,6 +29,12 @@ const Home = () => {
               <th className="box3">
                 <img src={e.profile} alt="profile" />
               </th>
+              <th className="box4">
+                <button>Delete</button>
+              </th>
+              <th className="box5">
+                <button>Add to Favorite</button>
+              </th>
             </tr>
           ))}
         </tbody>
