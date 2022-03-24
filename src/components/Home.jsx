@@ -24,7 +24,7 @@ export default function Home() {
   React.useEffect(() => {
     setLoading(true);
     async function getdata() {
-      const list = await fetch("http://localhost:2022");
+      const list = await fetch("https://airmeetbackendpro.herokuapp.com/");
       const finaldata = await list.json();
       setData(finaldata);
       setLoading(false);
