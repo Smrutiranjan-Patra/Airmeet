@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from "react";
 import "./css/home.css";
+import {
+  DoubleBubble,
+} from "react-spinner-animated";
+
+import "react-spinner-animated/dist/index.css";
 
 const Home = () => {
   const [data, setData] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     async function getdata() {
       const list = await fetch("http://localhost:2022");
       const finaldata = await list.json();
       setData(finaldata);
+      setLoading(false);
     }
+
     getdata();
   }, []);
   console.log(data);
 
-  return (
+  return loading ? (
+    <div className="loading">
+      <DoubleBubble
+        text={""}
+        bgColor={"tra"}
+        width={"100px"}
+        height={"100px"}
+      />
+    </div>
+  ) : (
     <div className="Home">
       <div className="tablebox">
         <tbody>
