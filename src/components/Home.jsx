@@ -11,11 +11,15 @@ import "react-spinner-animated/dist/index.css";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { useNavigate } from "react-router-dom";
 
-export default function CheckboxListSecondary() {
+export default function Home() {
+  const navigate = useNavigate();
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+  const [checked, setChecked] = React.useState([]);
+  const [favitem, setFavitem] = React.useState([]);
 
   React.useEffect(() => {
     setLoading(true);
@@ -27,7 +31,6 @@ export default function CheckboxListSecondary() {
     }
     getdata();
   }, []);
-  const [checked, setChecked] = React.useState([]);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -40,7 +43,6 @@ export default function CheckboxListSecondary() {
     }
     setChecked(newChecked);
   };
-  console.log(checked);
   function handledelete() {
     let temp = [];
     for (let i = 0; i < checked.length; i++) {
@@ -51,6 +53,33 @@ export default function CheckboxListSecondary() {
     setTimeout(() => {
       setSuccess(false);
     }, 1000);
+  }
+
+  const uniqueObject = (arrayOfObjects) => {
+    const ids = new Set();
+    const results = [];
+    for (let i = 0; i < arrayOfObjects.length; i++) {
+      if (ids.has(arrayOfObjects[i].id)) continue;
+      else {
+        results.push(arrayOfObjects[i]);
+        ids.add(arrayOfObjects[i].id);
+      }
+    }
+    return results;
+  };
+
+  function handlefavitem() {
+    if (localStorage.getItem("favitem") === null) {
+      localStorage.setItem("favitem", JSON.stringify(checked));
+    } else {
+      const data = JSON.parse(localStorage.getItem("favitem"));
+      const temp = [...data, ...checked];
+      const newdata = uniqueObject(temp);
+      localStorage.clear();
+      localStorage.setItem("favitem", JSON.stringify(newdata));
+    }
+
+    setChecked([]);
   }
   return loading ? (
     <div className="loading">
@@ -66,10 +95,18 @@ export default function CheckboxListSecondary() {
       <Button variant="outlined" sx={{ margin: "10px" }} onClick={handledelete}>
         Delete
       </Button>
-      <Button variant="outlined" sx={{ margin: "10px" }}>
+      <Button
+        variant="outlined"
+        sx={{ margin: "10px" }}
+        onClick={handlefavitem}
+      >
         Add To favorite
       </Button>
-      <Button variant="outlined" sx={{ margin: "10px" }}>
+      <Button
+        variant="outlined"
+        sx={{ margin: "10px" }}
+        onClick={() => navigate("./favorite")}
+      >
         Go To favorite
       </Button>
       {success && (
