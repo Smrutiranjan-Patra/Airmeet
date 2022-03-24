@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-        let shop = await user.find().lean().exec();
+        let shop = await user.find().limit(10).lean().exec();
         return res.status(201).send(shop);
     } catch (e) {
         return res.status(500).json({ status: "Failed", message: e.message });
